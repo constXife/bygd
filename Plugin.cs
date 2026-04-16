@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Bygd
 {
-    [BepInPlugin("com.constxife.bygd", "Bygd", "1.0.0")]
+    [BepInPlugin("com.constxife.bygd", "Bygd", "0.0.1")]
     [BepInDependency(Main.ModGuid)]
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
     public class BygdPlugin : BaseUnityPlugin

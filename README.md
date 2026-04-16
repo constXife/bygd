@@ -1,89 +1,134 @@
-# Bygd — Living Villages for Valheim
+# Bygd
 
-A Valheim mod that adds NPC-driven settlements with automated resource gathering, courier networks, and blueprint-based construction.
+Bygd is a Valheim mod focused on living villages: outposts with NPC settlers, courier logistics, blueprint-driven building, and resource loops that make player-made settlements feel inhabited.
 
-## Features
+## Status
 
-### Outpost System
-- **Elder's Table** — place it anywhere, build a house around it, and an elder NPC will arrive
-- **Resource management** — settlers consume wood and food; supply them through offering chests
-- **Comfort-based progression** — upgrade your outpost (levels 0-3) by improving comfort, just like the vanilla rested bonus
-- **Ward protection** — transferred outposts are protected from damage and unauthorized access
+Bygd is in active development.
+
+- Public release line: `0.0.x`
+- Current public release: `0.0.1`
+- Current focus: gameplay iteration, AI stability, and mod packaging
+
+## What It Adds
+
+### Outposts
+
+- Place an **Elder's Table** and build a proper house around it
+- Transfer the outpost to an NPC elder
+- Supply the settlement with wood and food through an offering chest
+- Progress the outpost by improving comfort and village infrastructure
+- Protect transferred outposts from damage and unauthorized access
 
 ### Courier Network
-- **Courier Post** — assign a courier to deliver items between outposts
-- **Mail Posts** — place them with a chest and a sign (`@destination`) to send parcels
-- **Boar mounts** — level 3+ outposts get boar-mounted couriers for faster delivery
 
-### Lumberjack
-- **Lumberjack Post** — a woodcutter NPC that chops trees in nearby forests (20-80m from village)
-- Collects wood and seeds, replants saplings after chopping
-- Delivers wood to the outpost's resource pool
+- Place a **Courier Post** near a developed outpost
+- Build **Mail Posts** with a chest and a sign using `@destination`
+- Dispatch couriers between stations
+- Use sign-based routing for stations and waypoints
+
+### Lumberjack Role
+
+- Assign a lumberjack to harvest nearby trees
+- Collect wood and seeds automatically
+- Replant saplings after chopping
+- Feed gathered wood back into the outpost resource pool
 
 ### Blueprint Construction
-- **Ghost preview** — see a translucent outline of the planned building (uses PlanBuild shader)
-- **Rotate and confirm** — press E to rotate, Shift+E to start building
-- **Gradual construction** — pieces are placed bottom-up, 3 per second, consuming wood from the outpost
-- **Player choice** — cancel the plan and build your own design instead
 
-### Caravan System
-- **Sign-based routing** — place signs with `@station` or `#waypoint` to create a route network
-- **Dijkstra pathfinding** — caravans find the shortest path between stations
-- **Lox-pulled carts** — ride along as a passenger
+- Preview a build with a ghost outline
+- Rotate and place the blueprint before construction starts
+- Build structures gradually from the bottom up
+- Spend outpost wood on automated construction
+
+### Caravan Systems
+
+- Build route networks with signs
+- Use shortest-path routing between stations
+- Travel with caravan transport instead of moving everything by hand
 
 ## Requirements
 
 - [BepInEx 5.4.23+](https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/)
 - [Jotunn 2.29+](https://thunderstore.io/c/valheim/p/ValheimModding/Jotunn/)
-- [PlanBuild](https://thunderstore.io/c/valheim/p/MathiasDecrock/PlanBuild/) (optional, for blueprint ghost preview)
+- [PlanBuild](https://thunderstore.io/c/valheim/p/MathiasDecrock/PlanBuild/) optional, for the blueprint ghost preview material
 
 ## Installation
 
-1. Install BepInEx and Jotunn via your mod manager
-2. Copy `bygd.dll` and the `blueprints/` folder to `BepInEx/plugins/`
+### Mod Manager
+
+1. Install BepInEx.
+2. Install Jotunn.
+3. Install Bygd when a packaged release is available.
+
+### Manual
+
+1. Install BepInEx and Jotunn.
+2. Copy `bygd.dll` into `BepInEx/plugins/`.
+3. Copy the `blueprints/` folder into `BepInEx/plugins/`.
+
+## Compatibility
+
+- Target game: Valheim
+- Framework: `net462`
+- Language support in-game: English and Russian
+- Build requires local Valheim managed DLLs
+- Multiplayer compatibility is not declared stable yet
 
 ## Console Commands
 
 | Command | Description |
-|---------|-------------|
+| --- | --- |
 | `bygd debug` | Show outpost diagnostics |
 | `bygd setlevel <N>` | Set nearest outpost level |
-| `bygd devmode` | Toggle dev mode (free building, no resource drain) |
+| `bygd devmode` | Toggle dev mode |
 | `bygd cleanup` | Remove duplicate NPCs and ghost chests |
-| `bygd reset` | Emergency stop: halt all patrols, respawn couriers |
+| `bygd reset` | Stop patrols and respawn couriers |
 | `bygd list` | Show registered stations and waypoints |
 
-## Architecture
+## Known Limitations
 
-```
-Plugin.cs              — mod init, piece registration
-Commands.cs            — console commands (Jotunn ConsoleCommand)
-Framework/
-  AnchorUI.cs          — shared UI panel for all anchor buildings
-  ObjectFinder.cs      — generic spatial queries
-  PostRuntime.cs       — shared piece lifecycle (EnsureComponent/IsLivePost)
-  NPCSpawnHelper.cs    — shared NPC spawn/despawn/find
-  Localizations.cs     — Russian + English UI strings
-  Reflect.cs           — Harmony reflection (private Valheim APIs)
-  Log.cs, PrefabNames.cs, AISuppression.cs
-Outpost/               — elder's table, settlers, resources, comfort, ward
-Courier/               — courier post, delivery runner, courier binding
-Mail/                  — mail posts, parcel system
-Lumberjack/            — woodcutter NPC, tree chopping, sapling planting
-Transport/             — cart system, walker, patrol, mount config
-NPC/                   — base NPC class, settler/courier dialogue
-Blueprint/             — parser, ghost preview, builder, selection UI
-Patches/               — all Harmony patches
-```
+- The mod is still balancing NPC behavior and settlement progression.
+- Multiplayer support should be treated as experimental until explicitly documented otherwise.
+- The build process depends on locally installed Valheim assemblies.
+- Public packaging and release automation are still being set up.
 
-## Building
+## Development
 
 ```sh
 dotnet build
-task          # build + deploy to BepInEx/plugins
+task
 ```
 
-Requires Valheim managed DLLs at the path specified in `bygd.csproj`.
+`task` builds the mod and deploys the DLL plus blueprint files into the local BepInEx plugins directory.
+
+If your Valheim install is not in the default location, override the managed DLL path:
+
+```sh
+dotnet build -p:ValheimManagedPath="/path/to/Valheim/Managed"
+```
+
+## Project Structure
+
+```text
+Plugin.cs              - mod initialization and piece registration
+Commands.cs            - console commands
+Framework/             - shared helpers, localization, reflection, logging
+Outpost/               - elder table, settlers, resources, comfort, ward logic
+Courier/               - courier posts, delivery runner, courier binding
+Mail/                  - mail posts and parcel handling
+Lumberjack/            - lumberjack role logic
+Transport/             - carts, patrol movement, routing
+NPC/                   - base NPC behavior and contextual dialogue
+Blueprint/             - parser, ghost preview, builder, selection UI
+Patches/               - Harmony patches
+```
+
+## Roadmap
+
+- Add screenshots and gameplay clips
+- Improve balancing and AI edge-case handling
+- Harden multiplayer behavior
 
 ## License
 

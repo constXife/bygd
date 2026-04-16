@@ -1,0 +1,76 @@
+name: Bug report
+description: Report a gameplay, installation, or technical problem in Bygd
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please include enough detail to reproduce it.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What went wrong?
+      placeholder: The courier never leaves the post after I create a route.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the exact steps that trigger the issue
+      placeholder: |
+        1. Place an Elder's Table
+        2. Transfer the outpost
+        3. Place a Courier Post
+        4. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: The courier should start the patrol and deliver the parcel.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: The courier stays idle and no delivery starts.
+    validations:
+      required: true
+  - type: input
+    id: mod-version
+    attributes:
+      label: Bygd version
+      placeholder: 0.0.1
+    validations:
+      required: true
+  - type: input
+    id: game-version
+    attributes:
+      label: Valheim version
+      placeholder: 0.219.x
+    validations:
+      required: true
+  - type: input
+    id: mod-loader
+    attributes:
+      label: BepInEx / Jotunn versions
+      placeholder: BepInEx 5.4.23, Jotunn 2.29.0
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste the relevant part of `BepInEx/LogOutput.log`
+      render: text
+  - type: textarea
+    id: extra
+    attributes:
+      label: Extra context
+      description: Mods installed, world setup, screenshots, or other details

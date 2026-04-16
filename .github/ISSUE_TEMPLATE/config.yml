@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions
+    url: https://github.com/constXife/bygd/discussions
+    about: Use Discussions for questions, feedback, and general conversation
+  - name: Documentation
+    url: https://github.com/constXife/bygd/blob/main/README.md
+    about: Read the README before opening an issue
