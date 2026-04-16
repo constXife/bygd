@@ -1,0 +1,34 @@
+version: '3'
+
+vars:
+  VALHEIM_DIR: "{{.HOME}}/Library/Application Support/Steam/steamapps/common/Valheim"
+  PLUGINS_DIR: "{{.VALHEIM_DIR}}/BepInEx/plugins"
+  BEPINEX_DIR: "{{.VALHEIM_DIR}}/BepInEx"
+  DLL: "bin/Debug/net462/bygd.dll"
+
+tasks:
+  default:
+    desc: "Build, clean logs, and deploy the mod"
+    cmds:
+      - task: build
+      - task: clean-logs
+      - task: deploy
+
+  build:
+    desc: "Build the mod (dotnet build)"
+    cmds:
+      - dotnet build -v quiet
+
+  clean-logs:
+    desc: "Clean BepInEx logs"
+    cmds:
+      - rm -f "{{.BEPINEX_DIR}}/LogOutput.log"
+      - echo "Logs cleaned"
+
+  deploy:
+    desc: "Copy the DLL and blueprints into BepInEx/plugins"
+    cmds:
+      - cp "{{.DLL}}" "{{.PLUGINS_DIR}}/bygd.dll"
+      - mkdir -p "{{.PLUGINS_DIR}}/blueprints"
+      - cp blueprints/*.blueprint "{{.PLUGINS_DIR}}/blueprints/" 2>/dev/null || true
+      - echo "Deployed: {{.PLUGINS_DIR}}/bygd.dll + blueprints/"

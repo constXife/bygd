@@ -1,0 +1,19 @@
+bin/
+obj/
+.DS_Store
+*.user
+*.suo
+*.cache
+*.log
+
+# IDE
+.idea/
+.vs/
+*.swp
+*~
+
+# Serena
+.serena/
+
+# Claude
+.claude/
